@@ -4,9 +4,14 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
+import Aux from '../SlotEnum'
 const {ccclass, property} = cc._decorator;
+const {log} = cc;
 
+/**
+ * 老虎机结构
+ * Machine -> n*Reel -> n*Tile
+ */
 @ccclass
 export default class Machine extends cc.Component {
 
@@ -55,4 +60,70 @@ export default class Machine extends cc.Component {
     }
 
     update (dt) {}
+
+    /**
+     * 初始化Machine，生成Reels
+     */
+    createMachine() {
+        log("create Machine")
+        /**
+         * this.node表示当前脚本绑定的node节点
+         */
+        log("this.node = ", this.node)
+        // 先移除上面的Child
+        this.node.destroyAllChildren()
+
+        this.reels = []
+
+        let newReel: cc.Node
+
+        for (let i = 0; i < this.numberOfReels; i+=1) {
+            newReel = cc.instantiate(this.reelPrefab)
+            // 至此已经可以根据配置的Reel数量，显示出对应列数的布局了
+            this.node.addChild(newReel)
+
+            this.reels[i] = newReel
+
+            // 获取创建的Reel
+            const reelScript = newReel.getComponent("Reel")
+            // Reel里，创建Tile
+            reelScript.shuffle()
+            // reelScript.reelAnchor.getComponent(cc.Layout).enabled = false
+        }
+
+        this.node.getComponent(cc.Widget).updateAlignment()
+
+
+    }
+
+    /**
+     * 旋转方法
+     */
+    spin() {
+        this.spinning = true
+        this.button.getChildByName('Label').getComponent(cc.Label).string = 'STOP'
+        this.disableGlow()
+
+        for (let i = 0; i < this.numberOfReels; i++) {
+            const theReel = this.reels[i].getComponent('Reel')
+
+            if (i % 2) {
+                theReel.spinDirection = Aux.Direction.Down
+            } else {
+                theReel.spinDirection = Aux.Direction.Up
+            }
+
+            theReel.doSpin(0.03 * i)
+        }
+
+
+    }
+
+    lock() {
+       this.button.getComponent(cc.Button).interactable = false
+    }
+
+    disableGlow() {
+
+    }
 }
