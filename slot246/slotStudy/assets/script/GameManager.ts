@@ -35,8 +35,19 @@ export default class NewClass extends cc.Component {
         this.machine.getComponent('Machine').createMachine()
     }
 
+    /**
+     * 不断的检查，是否可停止
+     * @param dt
+     */
     update(dt) {
+        if (this.block && this.result != null) {
+            this.informStop()
+            this.result = null
+        }
+    }
 
+    informStop() {
+        this.machine.getComponent('Machine').stop(this.result)
     }
 
 
@@ -51,6 +62,7 @@ export default class NewClass extends cc.Component {
             machineComp.spin()
             this.requestResult()
         } else if (!this.block) {
+            this.block = true
             machineComp.lock()
         }
     }
@@ -73,10 +85,14 @@ export default class NewClass extends cc.Component {
     get tileCount(): number {
         if (this._tileCount <= 0) {
             try {
-                this._tileCount = this.machine.getChildByName('Reel').getChildByName('In')
-                    .getChildByName('Tile').getComponent('Tile').tileCount
+                let tt = this.machine.getChildByName('Reel').getChildByName('In')
+                    .getChildByName('Tile')
+                console.log("tt", tt)
+                this._tileCount = tt.getComponent('Tile').tileCount
+                console.log("this._tileCount = try", this._tileCount)
             } catch (e) {
                 this._tileCount = 0
+                console.log("this._tileCount = catch", this._tileCount)
             }
         }
         console.log("this._tileCount = ", this._tileCount)

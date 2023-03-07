@@ -1,4 +1,4 @@
-export abstract class Dice {
+export default class Dice {
     /**
      * Returns a random integer between min (inclusive) and max (exclusive).
      * @param min Minimum value (inclusive).

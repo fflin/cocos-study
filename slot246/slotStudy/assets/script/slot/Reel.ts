@@ -147,5 +147,11 @@ export default class Reel extends cc.Component {
 
     }
 
+    readyStop(newResult: Array<number>) {
+        const check = this.spinDirection === Aux.Direction.Down || newResult == null
+        this.result = check ? newResult : newResult.reverse()
+        this.stopSpinning = true
+    }
+
 
 }

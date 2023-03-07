@@ -13,6 +13,10 @@ export default class Tile extends cc.Component {
     @property({type: [cc.SpriteFrame], visible: true})
     private textures = []
 
+    get tileCount() {
+        return this.textures.length;
+    }
+
     start() {
 
     }

@@ -1,4 +1,5 @@
-import {Dice} from "../Dice";
+import dic from '../Dice'
+import Aux from '../SlotEnum'
 
 /**
  * Rolls the reels.
@@ -26,7 +27,7 @@ export class SlotRoller {
             equalTile: 0
         };
 
-        const roll = Dice.roll(100);
+        const roll = dic.roll(100);
         if (roll < SlotRoller.ROLL_ALL_EQUAL) {
             result = SlotRoller.allLinesResult(tileCount, reelCount);
         } else if (roll < SlotRoller.ROLL_TWO_LINES) {
@@ -65,15 +66,15 @@ export class SlotRoller {
         var uniqueValues = [];
 
         for (let j = 0; j < reelCount; ++j) {
-            result[j] = Dice.roll(tileCount);
+            result[j] = dic.roll(tileCount);
             if (!uniqueValues.includes(result[j])) {
                 uniqueValues.push(result[j]);
             }
         }
 
         if (uniqueValues.length <= 1) {
-            const differentPosition = Dice.roll(length);
-            const differentValue = Dice.rollDifferent(reelCount, uniqueValues[0]);
+            const differentPosition = dic.roll(length);
+            const differentValue = dic.rollDifferent(reelCount, uniqueValues[0]);
             result[differentPosition] = differentValue;
         }
 
@@ -91,7 +92,7 @@ export class SlotRoller {
         var result = {
             reels: SlotRoller.createEmptyMatrix(reelCount),
             equalLines: [],
-            equalTile: Dice.roll(tileCount)
+            equalTile: dic.roll(tileCount)
         };
 
         // Saves equal lines
@@ -134,11 +135,11 @@ export class SlotRoller {
         var result = {
             reels: SlotRoller.createEmptyMatrix(reelCount),
             equalLines: [],
-            equalTile: Dice.roll(tileCount)
+            equalTile: dic.roll(tileCount)
         };
 
         // Saves equal lines
-        const differentLine = Dice.roll(this.REEL_LENGTH);
+        const differentLine = dic.roll(this.REEL_LENGTH);
         for (let i = 0; i < this.REEL_LENGTH; i++) {
             if (i != differentLine) {
                 result.equalLines.push(i);
@@ -160,8 +161,8 @@ export class SlotRoller {
     private static singleLineResult(tileCount: number, reelCount: number): IResult {
         var result = {
             reels: SlotRoller.createEmptyMatrix(reelCount),
-            equalLines: [Dice.roll(this.REEL_LENGTH)],
-            equalTile: Dice.roll(tileCount)
+            equalLines: [dic.roll(this.REEL_LENGTH)],
+            equalTile: dic.roll(tileCount)
         };
 
         SlotRoller.populateMatrix(result, tileCount, reelCount);

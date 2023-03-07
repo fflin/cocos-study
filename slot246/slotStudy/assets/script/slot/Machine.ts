@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 import Aux from '../SlotEnum'
+
 const {ccclass, property} = cc._decorator;
 const {log} = cc;
 
@@ -53,13 +54,15 @@ export default class Machine extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {}
+    onLoad() {
+    }
 
-    start () {
+    start() {
 
     }
 
-    update (dt) {}
+    update(dt) {
+    }
 
     /**
      * 初始化Machine，生成Reels
@@ -77,7 +80,7 @@ export default class Machine extends cc.Component {
 
         let newReel: cc.Node
 
-        for (let i = 0; i < this.numberOfReels; i+=1) {
+        for (let i = 0; i < this.numberOfReels; i += 1) {
             newReel = cc.instantiate(this.reelPrefab)
             // 至此已经可以根据配置的Reel数量，显示出对应列数的布局了
             this.node.addChild(newReel)
@@ -120,10 +123,40 @@ export default class Machine extends cc.Component {
     }
 
     lock() {
-       this.button.getComponent(cc.Button).interactable = false
+        this.button.getComponent(cc.Button).interactable = false
     }
 
     disableGlow() {
+
+    }
+
+    stop(result: IResult = null) {
+        /**
+         * 固定时间内停止终止状态
+         */
+        setTimeout(() => {
+            this.spinning = false
+            this.button.getComponent(cc.Button).interactable = true
+            this.button.getChildByName('Label').getComponent(cc.Label).string = "SPIN"
+            this.enableGlow(result)
+        }, 1500)
+
+        /**
+         * 让Reel停下来
+         */
+        const rngMod = Math.random() / 2
+        for (let i = 0; i < this.numberOfReels; i++) {
+            const spinDelay = i < 2 + rngMod ? i / 4 : rngMod * (i - 2) + i / 4
+            const theReel = this.reels[i].getComponent('Reel')
+
+            setTimeout(() => {
+                theReel.readyStop(result.reels[i])
+            }, spinDelay * 1000)
+        }
+
+    }
+
+    private enableGlow(result: IResult) {
 
     }
 }
