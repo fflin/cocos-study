@@ -67,7 +67,8 @@ export class HttpRequest {
             "model": "YAL-AL00",
             "os": "android",
             "os_version": "29",
-            "t": 1677828464639
+            "t": new Date().getTime()   // 到毫秒
+            // "t": Date.parse(new Date()) // 到秒
         }
 
         /**
@@ -171,9 +172,6 @@ export class HttpRequest {
 
         return signStr
     }
-
-
-
 
 
 

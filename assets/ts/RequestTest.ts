@@ -9,8 +9,8 @@ export class RequestTest extends Component{
    start() {
        this.node.on("click", () => {
            log("click----")
-           // new HttpRequest().doPost("app/cime/init",{"aaa":1,"bbb":2,"app_id":"baty"})
-           new HttpRequest().doGet("app/cime/init",{"aaa":1,"bbb":2,"app_id":"baty"})
+           new HttpRequest().doPost("app/cime/init",{"aaa":1,"bbb":2,"app_id":"baty"})
+           // new HttpRequest().doGet("app/cime/init",{"aaa":1,"bbb":2,"app_id":"baty"})
            // this.testSign()
        })
    }
