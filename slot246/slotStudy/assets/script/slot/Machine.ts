@@ -127,7 +127,16 @@ export default class Machine extends cc.Component {
     }
 
     disableGlow() {
-
+        try {
+            for (const line of this.glows.children) {
+                for (const glow of line.children) {
+                    const skel: sp.Skeleton = glow.getComponent('sp.Skeleton')
+                    skel.animation = null
+                }
+            }
+        } catch (e) {
+            console.log("disableGlow e = ", e)
+        }
     }
 
     stop(result: IResult = null) {
@@ -157,6 +166,16 @@ export default class Machine extends cc.Component {
     }
 
     private enableGlow(result: IResult) {
-
+        for (const lineIndex of result.equalLines) {
+            try {
+                const line: cc.Node = this.glows.children[lineIndex]
+                for (const glow of line.children) {
+                    const skel: sp.Skeleton = glow.getComponent('sp.Skeleton')
+                    skel.animation = "loop"
+                }
+            } catch (e) {
+                console.log('enable glow e = ', e)
+            }
+        }
     }
 }
