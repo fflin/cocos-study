@@ -102,7 +102,7 @@ export default class NewClass extends cc.Component {
 
     private _reelCount = 0
     get realCount() : number{
-        if (this._reelCount == 0) {
+        if (this._reelCount <= 0) {
             try {
                 this._reelCount = this.machine.getComponent('Machine').numberOfReels
             } catch (e) {
