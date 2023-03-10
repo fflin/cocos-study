@@ -11,7 +11,8 @@ import Label = cc.Label;
 import Sprite = cc.Sprite;
 import {HttpRequest} from "../http/HttpRequest";
 import {HttpBaseModel} from "../model/HttpBaseModel";
-import Button = cc.Button;
+
+import PageView = cc.PageView;
 
 const {ccclass, property} = cc._decorator;
 
@@ -79,13 +80,31 @@ export default class NewClass extends cc.Component {
                  */
                 item.on(cc.Node.EventType.TOUCH_START, () => {
                     console.log('TOUCH_START', user.nickname)
-                    alert(user.nickname)
+                    // this.showViewPager();
+                    this.showScene()
                 })
             }
+
+            this.getComponent(ScrollView).scrollToLeft(0)
         }
     }
 
+    /**
+     * 加载场景，进入老虎机页面
+     * @private
+     */
+    private showScene() {
+        cc.director.loadScene('Main', function (err, scene) {
+            console.log('Main ----- load')
+        })
+    }
+
     start() {
+
+        /**
+         * 设置此节点为常驻节点
+         */
+        cc.game.addPersistRootNode(this.node)
 
         let req = new HttpRequest()
         if (req != null) {

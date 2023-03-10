@@ -67,6 +67,12 @@ export default class NewClass extends cc.Component {
         }
     }
 
+    onBackClick() {
+        cc.director.loadScene('hall', function (err) {
+            console.log('back click', err)
+        })
+    }
+
     async requestResult(): Promise<void> {
         this.result = null
         this.result = await this.getAnswer()
